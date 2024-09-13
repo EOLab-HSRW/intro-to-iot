@@ -13,7 +13,7 @@ services:
       - ./static-data:/static-data
       - ./settings.js:/data/settings.js
     environment:
-      - TZ=America/El_Salvador
+      - TZ=America/Colombia
       - ROOT=/ui
       - INPUT_ROOT=/input
       - USERNAME=nodered
@@ -44,7 +44,7 @@ services:
       - DOCKER_INFLUXDB_INIT_BUCKET=workshop
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=influx
       - INFLUXD_LOG_LEVEL=warn
-      - TZ=America/El_Salvador
+      - TZ=America/Colombia
     volumes:
       - ./conf:/etc/influxdb2
       - ./data_influxdb:/var/lib/influxdb2
