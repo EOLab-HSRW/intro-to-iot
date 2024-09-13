@@ -1,0 +1,58 @@
+version: "3.7"
+
+services:
+  node-red:
+    image: nodered/node-red:latest
+    container_name: nodered
+    ports:
+      - 8080:1880
+    networks:
+      - weather-net
+    volumes:
+      - ./node-red-data:/data
+      - ./static-data:/static-data
+      - ./settings.js:/data/settings.js
+    environment:
+      - TZ=America/El_Salvador
+      - ROOT=/ui
+      - INPUT_ROOT=/input
+      - USERNAME=nodered
+      - PASSWORD=$$2b$$08$$tAR..Dy/LrMasz3m.WZVh.V2U2Fx61OV86.vOHR6NmnssRzDXCH9e
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - 8081:3000
+    volumes:
+      - ./grafana-storage:/var/lib/grafana
+      - ./grafana-provisioning/:/etc/grafana/provisioning
+      - ./grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - weather-net
+    environment:
+      - GF_SECURITY_ADMIN_USER=grafana
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+      - GF_FEATURE_TOGGLES_ENABLE=publicDashboards
+  influxdb:
+    image: influxdb:2.6
+    restart: unless-stopped
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=influx
+      - DOCKER_INFLUXDB_INIT_PASSWORD=influxDB
+      - DOCKER_INFLUXDB_INIT_ORG=unicaes
+      - DOCKER_INFLUXDB_INIT_BUCKET=workshop
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=influx
+      - INFLUXD_LOG_LEVEL=warn
+      - TZ=America/El_Salvador
+    volumes:
+      - ./conf:/etc/influxdb2
+      - ./data_influxdb:/var/lib/influxdb2
+    ports:
+      - 8082:8086
+    networks:
+      - weather-net
+
+networks:
+  weather-net:
+    name: weather-net
