@@ -9,8 +9,8 @@ services:
     networks:
       - weather-net
     volumes:
-      - ./node-red-data:/data
-      - ./static-data:/static-data
+      # - ./node-red-data:/data
+      # - ./static-data:/static-data
       - ./settings.js:/data/settings.js
     environment:
       - TZ=America/Colombia
@@ -24,8 +24,8 @@ services:
     ports:
       - 8081:3000
     volumes:
-      - ./grafana-storage:/var/lib/grafana
-      - ./grafana-provisioning/:/etc/grafana/provisioning
+    #   - /var/lib/grafana:/var/lib/grafana
+    #   - /etc/grafana/provisioning:/etc/grafana/provisioning
       - ./grafana.ini:/etc/grafana/grafana.ini
     networks:
       - weather-net
@@ -45,9 +45,9 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=influx
       - INFLUXD_LOG_LEVEL=warn
       - TZ=America/Colombia
-    volumes:
-      - ./conf:/etc/influxdb2
-      - ./data_influxdb:/var/lib/influxdb2
+    # volumes:
+    #   - /etc/conf:/etc/influxdb2
+    #   - /var/lib/influxdb2:/var/lib/influxdb2
     ports:
       - 8082:8086
     networks:
